@@ -3,16 +3,16 @@
 //
 
 #include "is_d2xx.h"
-#include "pch.h"
 #include "framework.h"
-#include "RFID.h"
-#include "RFIDDlg.h"
 #include "afxdialogex.h"
+#include "SetDB.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
+CString index[6];
+MYSQL* conn;
 
 // 응용 프로그램 정보에 사용되는 CAboutDlg 대화 상자입니다.
 
@@ -87,6 +87,7 @@ BEGIN_MESSAGE_MAP(CRFIDDlg, CDialogEx)
 	
 
 	ON_BN_CLICKED(IDOK, &CRFIDDlg::OnBnClickedEnd)
+	ON_BN_CLICKED(IDC_BUTTON3, &CRFIDDlg::OnSetDB)
 END_MESSAGE_MAP()
 
 
@@ -268,6 +269,7 @@ void CRFIDDlg::OnReadOnce()
 			temp1 += temp;
 		}
 		Send_Query(temp1);
+		Show_Windows();
 	
 		printf("\n");
 	}
@@ -279,7 +281,7 @@ UINT ThreadForCounting(LPVOID param)
 	CRFIDDlg* pMain = (CRFIDDlg*)param;
 	while (pMain->m_isWorkingThread)
 	{
-		Sleep(30);
+		Sleep(500);
 		pMain->OnReadOnce();
 	}
 	return 0;
@@ -309,7 +311,6 @@ void CRFIDDlg::Send_Query(CString temp1)
 {
 	//sprintf_s(query, 1024, "SELECT * FROM test WHERE pin='43153915'");
 	sprintf_s(query, 1024, "SELECT * FROM test WHERE pin='%S' ", temp1);
-	printf("%s", query);
 
 	mysql_query(conn, "set Names euckr");
 
@@ -321,81 +322,70 @@ void CRFIDDlg::Send_Query(CString temp1)
 	result = mysql_store_result(conn);
 
 	int fields = mysql_num_fields(result);
-
+	
+	
 	row = mysql_fetch_row(result);
 	
+	index[0] = row[0];
+	index[1] = row[1];
+	index[2] = row[2];
+	index[3] = row[3];
+	index[4] = row[4];
+
+	if (index[4] == "off")
+	{
+		sprintf_s(query, 1024, "UPDATE test SET login ='on' WHERE pin = '%S'", temp1);
+
+		if (mysql_query(conn, query))
+		{
+			printf("error1");
+		}
+	}
+	else if (index[4] == "on")
+	{
+		sprintf_s(query, 1024, "UPDATE test Set login ='off' WHERE pin = '%S'", temp1);
+		if (mysql_query(conn, query))
+		{
+			printf("error2");
+		}
+	}
 	
-	CString index1, index2, index3;
-	index1 = row[0];
-	index2 = row[1];
-	index3 = row[2];
 
-	m_Index1.SetWindowTextW(index1);
-	m_index2.SetWindowTextW(index2);
-	m_index3.SetWindowTextW(index3);
+
+
 	
-	if (index3.Compare(_T("삼겹살")) == 0)
-	{
-		image_flag = 1;
-
-	}
-	if (index3.Compare(_T("등심")) == 0)
-	{
-		image_flag = 2;
-
-	}
-	if (index3.Compare(_T("안심")) == 0)
-	{
-		image_flag = 3;
-	}
-	if (index3.Compare(_T("목살")) == 0)
-	{
-		image_flag =4;
-	}
-
-
 	printf("\n");
 	
-	Load_Image();
 }
 
 
 
-void CRFIDDlg::Load_Image()
+void CRFIDDlg::Show_Windows()
 {
+
+	m_Index1.SetWindowTextW(index[1]);
+	m_index2.SetWindowTextW(index[2]);
+	if (index[4] == "off")
+	{
+		m_index3.SetWindowTextW(_T("login"));
+	}
+	else if(index[4]=="on")
+	{
+		m_index3.SetWindowTextW(_T("logout"));
+	}
+	
+
 	CRect rect;
 	m_control_picture.GetWindowRect(rect);
 	CDC* dc;
 	dc = m_control_picture.GetDC();
 	CImage image;
-	switch (image_flag)
-	{
-	case 1:
-		image.Load(_T("1.bmp"));
-		break;
-	case 2:
-		image.Load(_T("2.bmp"));
-		break;
-	case 3:
-		image.Load(_T("3.bmp"));
-		break;
-	case 4:
-		image.Load(_T("4.bmp"));
-		break;
-	default:
-		break;
-	}
+	image.Load(index[3]);
 
 	image.StretchBlt(dc->m_hDC, 0, 0, rect.Width(), rect.Height(), SRCCOPY);
 	ReleaseDC(dc);
 
-
-
 }
-
-
-
-
 
 
 void CRFIDDlg::OnBnClickedEnd()
@@ -404,3 +394,11 @@ void CRFIDDlg::OnBnClickedEnd()
 	OnDisconnect();
 	return;
 }
+
+
+void CRFIDDlg::OnSetDB()
+{
+	CSetDB dlg;
+	dlg.DoModal();
+}
+

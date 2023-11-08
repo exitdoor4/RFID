@@ -36,6 +36,9 @@
     <ClInclude Include="is_d2xx.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="SetDB.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RFID.cpp">
@@ -48,6 +51,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="is_d2xx.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SetDB.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -63,27 +69,6 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\RFID.ico">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="1.bmp">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="2.bmp">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="3.bmp">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="4.bmp">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="C:\Users\USER\Desktop\1_1.bmp">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="bitmap7.bmp">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="bitmap2.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>

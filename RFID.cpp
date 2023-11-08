@@ -6,6 +6,7 @@
 #include "framework.h"
 #include "RFID.h"
 #include "RFIDDlg.h"
+#include "NewDB.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

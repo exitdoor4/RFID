@@ -6,6 +6,8 @@
 #include "is_d2xx.h"
 #include <mysql.h>
 
+
+
 // CRFIDDlg 대화 상자
 class CRFIDDlg : public CDialogEx
 {
@@ -13,6 +15,7 @@ class CRFIDDlg : public CDialogEx
 public:
 	CRFIDDlg(CWnd* pParent = nullptr);	// 표준 생성자입니다.
 	~CRFIDDlg();
+	
 	IS_HANDLE ftHandle = 0;
 	char readSerialNumber[100] = "COM07";
 	char changeSerialNumber[100] = "RFID01";
@@ -21,7 +24,7 @@ public:
 	unsigned short writeLength = 0;
 	unsigned char readData[1024];
 	unsigned short readLength = 0;
-	MYSQL* conn;
+	
 	MYSQL* conn_result;
 	unsigned int timeout_sec = 1;
 	MYSQL_RES* result;
@@ -54,17 +57,28 @@ public:
 	CStatic m_info_RFID;
 	CStatic m_info_DB;
 	afx_msg void OnReadOnce();
+
 	CWinThread* m_pThread;
 	bool m_isWorkingThread;
+
 	void DB_Connect();
 	void Send_Query(CString temp);
 	CStatic m_Index1;
 	CStatic m_index2;
 	CStatic m_index3;
-	afx_msg void Load_Image();
+	afx_msg void Show_Windows();
 	int image_flag;
 	CStatic m_control_picture;
 	afx_msg void OnBnClickedEnd();
+	afx_msg void OnSetDB();
+	CString temp1;
+
+	
+//	CButton m_strCtrl;
+	CButton strctrl;
 };
 
 UINT ThreadForCounting(LPVOID param);
+class CSetDB;
+
+
