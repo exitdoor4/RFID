@@ -1,7 +1,11 @@
 ## 프로젝트 설명
- <p align="middle">RFID를 이용하여 회사원이 일상생활에 사용하는 사원증을 이용하여 </p>
+RFID를 이용하여 회사원이 일상생활에 사용하는 사원증을 이용하여
   
- <p align="middle">인증된 사람만 입장이 가능하는 시스템을 구축해보자</p>
+인증된 사람만 입장이 가능하는 시스템을 구축해보자
+
+ let's create a system that uses RFID technology to restrict access 
+ 
+ to certified individuals using their employee IDs.
 
 
 ---
